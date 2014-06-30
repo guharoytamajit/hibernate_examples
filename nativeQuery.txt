@@ -1,0 +1,20 @@
+	public void updateCustAppWithPlatformUrl(String url,String custId) throws HibernateException, Exception {
+		if (!MetLifeCommonUtil.isStringNullOrEmpty(url)&& !MetLifeCommonUtil.isStringNullOrEmpty(custId) ) {
+			String urlValue = url.trim();
+			String customerId=custId.trim();
+			if (!"".equalsIgnoreCase(urlValue)) {
+				String queryStr="update MMIPOS.T_CUST_APP_DTL set INTVW_PLTFRM_URL_ID=:url where CUST_ID=:custId";
+				EntityManager entityManager = getJpaTemplate()
+				.getEntityManager();
+				if (null == entityManager) {
+					entityManager = getJpaTemplate().getEntityManagerFactory().createEntityManager();
+				}
+				Query query = entityManager.createNativeQuery(queryStr, CustAgntAudtTrl.class);
+				if (null != query) {
+					query.setParameter("url", urlValue);
+					query.setParameter("custId", customerId);
+					query.executeUpdate();
+				}
+			}
+	}
+}
